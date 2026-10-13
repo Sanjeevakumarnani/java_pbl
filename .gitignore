@@ -1,0 +1,9 @@
+/lib/
+/out/
+/data/*.db
+/data/*.db-shm
+/data/*.db-wal
+/logs/*
+/exports/*
+/backups/*
+sources.txt

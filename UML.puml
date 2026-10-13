@@ -1,0 +1,19 @@
+@startuml
+skinparam packageStyle rectangle
+package "Presentation" {
+  class LoginFrame
+  class MainFrame
+}
+package "Service" {
+  class CrfmsService
+  class Security
+}
+package "Persistence" {
+  class Database
+  database "SQLite: data/crfms.db" as SQLite
+}
+LoginFrame --> CrfmsService
+MainFrame --> CrfmsService
+CrfmsService --> Database
+Database --> SQLite
+@enduml

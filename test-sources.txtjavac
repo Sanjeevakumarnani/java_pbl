@@ -1,0 +1,1 @@
+offcd /d "C:\Users\Nanda Kishore\OneDrive\Desktop\SSK\JAVA PBL\CRFMS_Desktop\"if not exist out mkdir outif exist test-sources.txt del test-sources.txtfor /r src\main\java %f in (*.java) do echo %f /r src\test\java %f in (*.java) do echo %f --release 17 -Xlint:all -d out @test-sources.txtif errorlevel 1 (pause 

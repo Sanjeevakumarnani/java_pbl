@@ -1,0 +1,16 @@
+src\main\java\crfms\CrfmsService.java
+src\main\java\crfms\Database.java
+src\main\java\crfms\LoginFrame.java
+src\main\java\crfms\Main.java
+src\main\java\crfms\MainFrame.java
+src\main\java\crfms\Security.java
+src\main\java\crfms\bot\TextTokenizer.java
+src\main\java\crfms\engine\CategoryStats.java
+src\main\java\crfms\engine\FeedbackCategory.java
+src\main\java\crfms\engine\Suggestion.java
+src\main\java\crfms\engine\SuggestionEngine.java
+src\main\java\crfms\engine\SuggestionRule.java
+src\main\java\crfms\engine\TagRule.java
+src\main\java\crfms\engine\ThresholdRule.java
+src\test\java\crfms\DatabaseIntegrationTest.java
+src\test\java\crfms\SecurityTest.java
