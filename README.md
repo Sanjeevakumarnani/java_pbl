@@ -1,132 +1,251 @@
-# CRFMS Desktop — Course Registration & Feedback Management System
+# CRFMS Desktop
 
-**Version 2.1.0 | Java 17+ | Swing desktop GUI | SQLite database**
+Course Registration & Feedback Management System (CRFMS) is a Java Swing desktop application for managing course registration, faculty/student workflows, feedback collection, FAQ and doubt handling, announcements, and reports.
 
-This release upgrades the earlier console/file-storage prototype to a desktop GUI backed by a real relational database. It preserves the core CRFMS domain rules while adding advanced feedback, FAQ doubt matching, waitlists, announcements, resources, and notification workflows.
+This project is designed to run locally with SQLite, without needing a separate database server.
+
+## Features
+
+- Role-based access for admin, faculty, and students
+- User authentication and password reset flow
+- Course creation, assignment, registration, and waitlist handling
+- Credit limit, capacity, and timetable checks
+- Feedback collection and teaching-quality analysis
+- FAQ and doubt ticket workflow
+- Announcements, resource sharing, and notifications
+- CSV export for reports and backup support
+- Persistent local database stored in `data/crfms.db`
+
+## Prerequisites
+
+Before running the app, make sure you have:
+
+- Java 17 or newer installed
+- A terminal or command prompt available
+- Internet access for the first launch so the SQLite JDBC and SLF4J jars can be downloaded automatically
+
+Check your Java installation:
+
+Windows:
+```bat
+java -version
+javac -version
+```
+
+Linux/macOS:
+```bash
+java -version
+javac -version
+```
+
+If Java is not installed, install JDK 17 or later before continuing.
+
+## Repository layout
+
+```text
+.
+├── src/main/java/            Java source files for the desktop application
+├── src/test/java/            Test classes
+├── docs/                     Project documentation, schema, and reports
+├── lib/                      Runtime jars downloaded automatically
+├── data/                     Local SQLite database and generated app data
+├── exports/                  CSV exports created at runtime
+├── backups/                  Database backup snapshots
+├── logs/                     Application logs
+├── run.sh                   Linux/macOS launcher
+├── run.bat                  Windows launcher
+├── build.sh                 Compile-only script
+├── build.bat                Windows compile script
+├── test.sh                  Test script
+├── test.bat                 Windows test script
+├── pom.xml                  Maven project definition
+├── README.md                Project documentation
+├── docs/schema.sql          SQLite schema
+└── .gitignore
+```
 
 ## Quick start
 
 ### Windows
-1. Install a JDK 17 or newer (not only a JRE). Verify `java -version` and `javac -version` in Command Prompt.
-2. Extract the ZIP into a normal writable folder.
-3. Double-click `run.bat` or open Command Prompt in the extracted folder and run `run.bat`.
-4. The first launch downloads SQLite JDBC and its small logging dependencies from Maven Central. Internet access is required for this one-time setup.
-5. Sign in with `admin` / `Admin@123`. The application requires a new password on first login.
+
+1. Install JDK 17 or later.
+2. Open Command Prompt in the project folder.
+3. Run:
+
+```bat
+run.bat
+```
+
+The app will compile the project and download required runtime jars if they are missing.
 
 ### Linux / macOS
+
+1. Open a terminal in the project folder.
+2. Make the scripts executable:
+
+```bash
+chmod +x run.sh build.sh test.sh
+```
+
+3. Start the application:
+
+```bash
+./run.sh
+```
+
+If dependencies are missing, the launcher downloads them automatically from Maven Central.
+
+## Demo mode
+
+To seed demo accounts and sample data:
+
+Windows:
+```bat
+run.bat --demo
+```
+
+Linux/macOS:
+```bash
+./run.sh --demo
+```
+
+This creates fictional sample accounts for testing.
+
+## Default demo credentials
+
+The demo dataset includes these accounts:
+
+- Admin
+  - User ID: `admin`
+  - Password: `Admin@123`
+- Faculty
+  - User ID: `fac101`
+  - Password: `Welcome123`
+- Student
+  - User ID: `stu1001`
+  - Password: `Welcome123`
+
+Important:
+- All seeded accounts require a password change on first login.
+- Demo data is fictional and should not be used for real institutional records.
+
+## Building the project
+
+### Linux/macOS
+```bash
+./build.sh
+```
+
+### Windows
+```bat
+build.bat
+```
+
+The build script compiles the Java source into the `out/` directory.
+
+## Running tests
+
+### Linux/macOS
+```bash
+./test.sh
+```
+
+### Windows
+```bat
+test.bat
+```
+
+The test script runs:
+
+- Java compilation checks
+- Security tests
+- schema validation (if Python 3 is installed)
+- integration tests that require SQLite JDBC files in `lib/`
+
+## Manual dependency note
+
+The project is set up to download runtime dependencies automatically on first run.
+
+If the app cannot reach Maven Central, install the following jars manually in the `lib/` folder:
+
+- `sqlite-jdbc-3.50.3.0.jar`
+- `slf4j-api-2.0.17.jar`
+- `slf4j-nop-2.0.17.jar`
+
+Then run the launcher again.
+
+## Maven option
+
+This repository also includes a `pom.xml` for Maven-based builds:
+
+```bash
+mvn clean package
+```
+
+## Database and data files
+
+The app stores data locally in SQLite.
+
+- Main database: `data/crfms.db`
+- Database schema: `docs/schema.sql`
+- Backup files: `backups/`
+- CSV exports: `exports/`
+
+Back up the database before making manual changes.
+
+## Troubleshooting
+
+### Java version error
+
+If you see errors about unsupported class files or Java version mismatch, install JDK 17 and confirm:
+
+```bash
+java -version
+javac -version
+```
+
+### Dependency download failed
+
+Check your internet connection and rerun:
+
+```bash
+./run.sh
+```
+
+or on Windows:
+
+```bat
+run.bat
+```
+
+### App does not start after build
+
+Make sure the required libraries exist in `lib/` and rerun the launcher.
+
+## Notes
+
+- This is a desktop GUI application, not a web app.
+- The program runs on the local machine and uses a local SQLite database.
+- Passwords are hashed and stored securely; they are not kept as plain text.
+- Demo identities are intended for testing and feature exploration only.
+
+## License and usage
+
+This project is intended for academic and learning use. Please treat the demo data and credentials as sample-only content.
+
+## Summary
+
+If you just want to run the system quickly:
+
 ```bash
 chmod +x run.sh build.sh test.sh
 ./run.sh
 ```
 
-The first launch downloads the SQLite JDBC driver and SLF4J runtime jars. Run `./run.sh --demo` to seed fictional demonstration accounts, courses, FAQ entries, and a feedback period.
+Or on Windows:
 
-### Demo accounts
-`./run.sh --demo` (or `run.bat --demo`) seeds these fictional accounts if absent:
-
-| Role | User ID | Initial password |
-|---|---|---|
-| Admin | `admin` | `Admin@123` |
-| Faculty | `fac101` | `Welcome123` |
-| Student | `stu1001` | `Welcome123` |
-
-All seeded accounts require a password change on first sign-in. Demo identities and data are fictional; do not use them as institutional records.
-
-## What is implemented
-
-### Authentication and user management
-- Admin, faculty, and student roles with role-specific workspaces.
-- PBKDF2-HMAC-SHA256 password hashes with random 16-byte salts and 120,000 iterations.
-- Forced password change on first sign-in; change-password flow verifies the current password.
-- In-memory lockout after three failed login attempts for five minutes.
-- Admin can create/edit/deactivate users and reset passwords; reset password is shown once.
-- Last active administrator cannot be deactivated.
-
-### Courses and registration
-- Course create/edit/deactivate; faculty assignment to active faculty accounts.
-- Search by course code/title/faculty name; catalogue includes capacity and available seats.
-- Register/drop; one active registration per student/course; dropped records are reactivated.
-- Registration window, credit limit, course capacity, active account/course, and timetable clash checks.
-- FIFO waitlist when a course is full; after a drop the system attempts promotion while rechecking account, credits, schedule clash, and duplicate-registration conditions.
-- Registration views are scoped to the signed-in student or faculty member.
-
-### Feedback and teaching quality
-- One simple course feedback entry per student/course; resubmission edits it. Admin can open/close the simple-feedback window independently from course registration.
-- Rating validation (1–5), optional comment, anonymous aggregation.
-- Faculty feedback is hidden until the configured minimum response count is met.
-- Feedback periods can be created and opened/closed by the administrator.
-- Ten-category teaching feedback with optional skipped ratings, tags, and a suggestion.
-- Minimum four rated categories; up to five tags; suggestions are moderated against a small configurable-in-code blocked-word list.
-- Teaching results and suggestions are withheld until each period's minimum response threshold is reached.
-- Explainable, rule-based teaching improvement guidance; admin-editable thresholds and advice, positive-strength callouts, and before/after period comparisons. Guidance is not an automated ranking or disciplinary decision.
-- Admin teaching-quality overview, course averages, response counts, and open-doubt counts.
-- Held-suggestion moderation (approve/reject without exposing student identity).
-- Faculty/admin improvement action plans with open, in-progress, completed, and cancelled statuses.
-
-### Doubts and learning support
-- Students can ask course-related doubts and choose anonymity.
-- Keyword-matching FAQ assistant answers only from stored FAQ entries scoped to a course or `ALL`.
-- Unmatched questions are escalated to the assigned faculty as open tickets.
-- Faculty can answer tickets for their own courses; students receive notifications.
-- Admin can manage FAQ entries.
-
-### Communication and reporting
-- Faculty/admin announcements; only currently registered students see course announcements.
-- Faculty/admin resource links; students see resources for courses they are registered in.
-- In-app notifications and mark-as-read workflow.
-- CSV export for courses, registrations, and feedback summaries; feedback averages/counts are suppressed below the configured minimum response threshold.
-- Database backup action creates timestamped snapshots under `backups/`.
-- Local SQLite database stored at `data/crfms.db`; the schema is also included in `docs/schema.sql`.
-- Audit events for key actions, and safe parameterized SQL for user input.
-
-## Database and privacy
-
-- SQLite is local and embedded; no server or network database is needed.
-- Foreign keys are enabled for each connection.
-- Passwords are never stored as plain text.
-- Simple feedback reports omit student identity and suppress results below the configured minimum response count.
-- Anonymous doubts hide the student's ID in doubt lists. The system stores the ID internally so the student can view their own ticket.
-- User-entered text is trimmed and line breaks/pipe delimiters are sanitised where appropriate.
-
-The database file is persistent. Back up `data/crfms.db` before manually editing or deleting data. Do not share the database file publicly because it contains student account records and feedback.
-
-## Tests and build
-
-```bash
-./build.sh
-./test.sh
+```bat
+run.bat
 ```
 
-Windows equivalents: `build.bat` and `test.bat`.
-
-- The project compiles with `javac --release 17 -Xlint:all` without needing the JDBC jar at compile time.
-- `SecurityTest` is a no-dependency test and runs offline.
-- `DatabaseIntegrationTest` contains extended integration checks for role isolation, privacy thresholds, waitlist promotion, rule-driven guidance, strengths, and suggestion moderation and runs automatically when the SQLite JDBC and SLF4J jars exist in `lib/`. It checks forced password changes, account creation, registration rules, waitlist promotion, timetable clash rejection, feedback privacy, FAQ matching, anonymous doubts, announcements, teaching-feedback suppression, persistence, and login lockout.
-- `run.sh`/`run.bat` fetch the runtime JDBC jars on first use. If network access is unavailable, install those jars separately into `lib/` before launching.
-
-## Project structure
-
-```text
-CRFMS_Desktop/
-  src/main/java/crfms/      Swing UI, SQLite access, services, password security
-  src/test/java/crfms/      Offline security test and database integration test
-  docs/schema.sql           Relational schema and default settings
-  docs/FEATURE_MATRIX.md    Feature-to-acceptance overview
-  docs/ACCEPTANCE_MATRIX.md Source PRD TC-01…TC-64 traceability and gaps
-  docs/PROJECT_PLAN.md      Implementation plan and remaining verification
-  docs/TEST_REPORT.md       Actual local verification results and limitations
-  run.sh / run.bat          Download dependencies if needed, compile, launch GUI
-  build.sh / build.bat      Offline Java compilation
-  test.sh / test.bat        Test runners
-  pom.xml                   Optional Maven project definition
-  data/                     Created at runtime; contains crfms.db
-  exports/                  Created at runtime; CSV exports
-```
-
-## Honest status and limitations
-
-The Java source compiles and the schema passed a local SQLite syntax smoke test using Python's SQLite engine. The four offline password-security checks and 14 offline SQLite schema/constraint checks pass. The SQLite JDBC driver could not be downloaded in the generation environment because outbound DNS/network access is disabled, so the GUI/database integration test was not executed here. It is included for execution after the driver is available.
-
-This is a substantial working implementation, but it is not a claim that all 64 PRD acceptance cases have been independently verified. The source-aligned acceptance matrix is in `docs/ACCEPTANCE_MATRIX.md`. It identifies intentional architecture changes and remaining partial cases, including waitlist skip reasons and the exact source-prompt category/tag scoring engine. Before institutional use, run the JDBC integration suite and manually verify all role workflows, privacy thresholds, waitlist behavior, comparison reports and CSV exports.
-#   j a v a _ p b l  
- 
+Then sign in with the admin account and complete the first-time password change flow.
